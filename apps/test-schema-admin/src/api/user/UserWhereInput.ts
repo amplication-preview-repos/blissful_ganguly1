@@ -1,0 +1,38 @@
+import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { DateTimeFilter } from "../../util/DateTimeFilter";
+import { StringFilter } from "../../util/StringFilter";
+import { UserRoleListRelationFilter } from "../userRole/UserRoleListRelationFilter";
+import { UsersImageWhereUniqueInput } from "../usersImage/UsersImageWhereUniqueInput";
+
+export type UserWhereInput = {
+  accountBsb?: StringNullableFilter;
+  accountName?: StringNullableFilter;
+  accountNumber?: StringNullableFilter;
+  address1?: StringNullableFilter;
+  address2?: StringNullableFilter;
+  billerCode?: StringNullableFilter;
+  billerName?: StringNullableFilter;
+  billerRef?: StringNullableFilter;
+  businessName?: StringNullableFilter;
+  city?: StringNullableFilter;
+  country?: StringNullableFilter;
+  createdAt?: DateTimeFilter;
+  deliveryAddress?: StringNullableFilter;
+  deliveryCountry?: StringNullableFilter;
+  deliveryPostcode?: StringNullableFilter;
+  deliveryState?: StringNullableFilter;
+  deliverySuburb?: StringNullableFilter;
+  displayName?: StringNullableFilter;
+  email?: StringFilter;
+  first?: StringNullableFilter;
+  id?: StringFilter;
+  initials?: StringNullableFilter;
+  last?: StringNullableFilter;
+  phone?: StringFilter;
+  postcode?: StringNullableFilter;
+  state?: StringNullableFilter;
+  suburb?: StringNullableFilter;
+  updatedAt?: DateTimeFilter;
+  userroles?: UserRoleListRelationFilter;
+  usersImages?: UsersImageWhereUniqueInput;
+};

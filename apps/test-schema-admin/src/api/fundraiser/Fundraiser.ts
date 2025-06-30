@@ -1,0 +1,34 @@
+import { FundraisersPromotion } from "../fundraisersPromotion/FundraisersPromotion";
+import { FundraisersCustomer } from "../fundraisersCustomer/FundraisersCustomer";
+import { FundraisersImage } from "../fundraisersImage/FundraisersImage";
+import { Order } from "../order/Order";
+import { FundraisersProduct } from "../fundraisersProduct/FundraisersProduct";
+import { FundraisersStatus } from "../fundraisersStatus/FundraisersStatus";
+import { Topic } from "../topic/Topic";
+import { UserRole } from "../userRole/UserRole";
+
+export type Fundraiser = {
+  createdAt: Date;
+  description: string | null;
+  endDate: Date;
+  fundraisersPromotions?: Array<FundraisersPromotion>;
+  fundraiserscustomers?: Array<FundraisersCustomer>;
+  fundraisersimages?: FundraisersImage | null;
+  fundraisersorders?: Array<Order>;
+  fundraisersproducts?: Array<FundraisersProduct>;
+  fundraisersstatus?: FundraisersStatus | null;
+  id: string;
+  image: string | null;
+  link: string | null;
+  postcode: string | null;
+  startDate: Date;
+  subscribed: boolean;
+  suburb: string | null;
+  target: number | null;
+  title: string | null;
+  topic: string | null;
+  topics?: Topic | null;
+  updatedAt: Date;
+  userRoles?: UserRole | null;
+  userRolesFundraisersSupplierUuidToUserRoles?: UserRole | null;
+};

@@ -1,0 +1,33 @@
+import { SortOrder } from "../../util/SortOrder";
+
+export type UserOrderByInput = {
+  accountBsb?: SortOrder;
+  accountName?: SortOrder;
+  accountNumber?: SortOrder;
+  address1?: SortOrder;
+  address2?: SortOrder;
+  billerCode?: SortOrder;
+  billerName?: SortOrder;
+  billerRef?: SortOrder;
+  businessName?: SortOrder;
+  city?: SortOrder;
+  country?: SortOrder;
+  createdAt?: SortOrder;
+  deliveryAddress?: SortOrder;
+  deliveryCountry?: SortOrder;
+  deliveryPostcode?: SortOrder;
+  deliveryState?: SortOrder;
+  deliverySuburb?: SortOrder;
+  displayName?: SortOrder;
+  email?: SortOrder;
+  first?: SortOrder;
+  id?: SortOrder;
+  initials?: SortOrder;
+  last?: SortOrder;
+  phone?: SortOrder;
+  postcode?: SortOrder;
+  state?: SortOrder;
+  suburb?: SortOrder;
+  updatedAt?: SortOrder;
+  imageUuid?: SortOrder;
+};

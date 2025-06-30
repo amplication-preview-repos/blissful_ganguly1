@@ -1,0 +1,35 @@
+import { UserRole } from "../userRole/UserRole";
+import { UsersImage } from "../usersImage/UsersImage";
+
+export type User = {
+  accountBsb: string | null;
+  accountName: string | null;
+  accountNumber: string | null;
+  address1: string | null;
+  address2: string | null;
+  billerCode: string | null;
+  billerName: string | null;
+  billerRef: string | null;
+  businessName: string | null;
+  city: string | null;
+  country: string | null;
+  createdAt: Date;
+  deliveryAddress: string | null;
+  deliveryCountry: string | null;
+  deliveryPostcode: string | null;
+  deliveryState: string | null;
+  deliverySuburb: string | null;
+  displayName: string | null;
+  email: string;
+  first: string | null;
+  id: string;
+  initials: string | null;
+  last: string | null;
+  phone: string;
+  postcode: string | null;
+  state: string | null;
+  suburb: string | null;
+  updatedAt: Date;
+  userroles?: Array<UserRole>;
+  usersImages?: UsersImage | null;
+};

@@ -1,0 +1,32 @@
+import { UserRoleCreateNestedManyWithoutUsersInput } from "./UserRoleCreateNestedManyWithoutUsersInput";
+import { UsersImageWhereUniqueInput } from "../usersImage/UsersImageWhereUniqueInput";
+
+export type UserCreateInput = {
+  accountBsb?: string | null;
+  accountName?: string | null;
+  accountNumber?: string | null;
+  address1?: string | null;
+  address2?: string | null;
+  billerCode?: string | null;
+  billerName?: string | null;
+  billerRef?: string | null;
+  businessName?: string | null;
+  city?: string | null;
+  country?: string | null;
+  deliveryAddress?: string | null;
+  deliveryCountry?: string | null;
+  deliveryPostcode?: string | null;
+  deliveryState?: string | null;
+  deliverySuburb?: string | null;
+  displayName?: string | null;
+  email: string;
+  first?: string | null;
+  initials?: string | null;
+  last?: string | null;
+  phone: string;
+  postcode?: string | null;
+  state?: string | null;
+  suburb?: string | null;
+  userroles?: UserRoleCreateNestedManyWithoutUsersInput;
+  usersImages?: UsersImageWhereUniqueInput | null;
+};
