@@ -1,0 +1,565 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  accountBsb       String?     @db.VarChar(255)
+  accountName      String?     @db.VarChar(255)
+  accountNumber    String?     @db.VarChar(255)
+  address1         String?     @db.VarChar(255)
+  address2         String?     @db.VarChar(255)
+  billerCode       String?     @db.VarChar(255)
+  billerName       String?     @db.VarChar(255)
+  billerRef        String?     @db.VarChar(255)
+  businessName     String?     @db.VarChar(255)
+  city             String?     @db.VarChar(255)
+  country          String?     @db.VarChar(255)
+  createdAt        DateTime    @default(now())
+  deliveryAddress  String?     @db.VarChar(255)
+  deliveryCountry  String?     @db.VarChar(255)
+  deliveryPostcode String?     @db.VarChar(255)
+  deliveryState    String?     @db.VarChar(255)
+  deliverySuburb   String?     @db.VarChar(255)
+  displayName      String?     @db.VarChar(255)
+  email            String      @unique @db.VarChar(255)
+  first            String?     @db.VarChar(255)
+  id               String      @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  initials         String?     @db.VarChar(255)
+  last             String?     @db.VarChar(255)
+  phone            String      @db.VarChar(255)
+  postcode         String?     @db.VarChar(255)
+  state            String?     @db.VarChar(255)
+  suburb           String?     @db.VarChar(255)
+  updatedAt        DateTime    @default(now()) @updatedAt
+  userroles        UserRole[]
+  usersImages      UsersImage? @relation(fields: [imageUuid], references: [id])
+  imageUuid        String?
+
+  @@map("Users")
+}
+
+model UserRole {
+  activities                                    Activity[]
+  categories                                    Category[]
+  createdAt                                     DateTime              @default(now())
+  emailNotification                             Boolean               @default(true)
+  enabled                                       Boolean               @default(true)
+  fundraisers                                   Fundraiser[]          @relation(name: "FundraisersOnUserRoles")
+  fundraisersFundraisersSupplierUuidToUserRoles Fundraiser[]          @relation(name: "fundraisersFundraisersSupplierUuidToUserRoles")
+  fundraiserscustomers                          FundraisersCustomer[]
+  id                                            String                @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  inboxReceiver                                 Inbox[]               @relation(name: "InboxInboxReceiverUserRoleInboxReceiver")
+  inboxSender                                   Inbox[]               @relation(name: "InboxInboxSenderUserRoleInboxSender")
+  messages                                      Message[]
+  notifications                                 Notification[]
+  orders                                        Order[]               @relation(name: "OrdersOnUserRoles")
+  postcodes                                     Postcode[]
+  products                                      Product[]
+  roles                                         EnumUserRoleRoles?    @relation(fields: [rolesUuid], references: [uuid])
+  subscriptions                                 Subscription[]
+  supplier                                      Order[]               @relation(name: "OrderSupplierUserRoleSupplier")
+  updatedAt                                     DateTime              @default(now()) @updatedAt
+  users                                         User?                 @relation(fields: [usersUuid], references: [id])
+  usersUuid                                     String?
+
+  @@map("UserRoles")
+}
+
+model Role {
+  createdAt DateTime @default(now())
+  id        String   @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  name      String   @unique @db.VarChar(255)
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("Roles")
+}
+
+model Notification {
+  createdAt DateTime  @default(now())
+  id        String    @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  image     String?   @db.VarChar(255)
+  isRead    Boolean   @default(false)
+  link      String?   @db.VarChar(255)
+  linkName  String?   @db.VarChar(255)
+  name      String    @db.VarChar(255)
+  target    String?   @db.VarChar(255)
+  text      String    @db.VarChar(1500)
+  updatedAt DateTime  @default(now()) @updatedAt
+  userRoles UserRole? @relation(fields: [userUuid], references: [id])
+  userUuid  String?
+
+  @@map("Notifications")
+}
+
+model Message {
+  assigned    Json?
+  channel     String    @default("chat") @db.VarChar(255)
+  channelUuid String?   @db.VarChar(255)
+  createdAt   DateTime  @default(now())
+  email       String    @db.VarChar(255)
+  id          String    @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  isPrivate   Boolean   @default(false)
+  isRead      Boolean   @default(false)
+  text        String
+  updatedAt   DateTime  @default(now()) @updatedAt
+  userName    String    @db.VarChar(255)
+  userRoles   UserRole? @relation(fields: [userUuid], references: [id])
+  userUuid    String?
+
+  @@map("Messages")
+}
+
+model Order {
+  additional       String?         @db.VarChar(1500)
+  address          String?         @db.VarChar(255)
+  atl              Boolean         @default(false)
+  billingAddress   String?         @db.VarChar(255)
+  billingCountry   String?         @db.VarChar(255)
+  billingPostcode  String?         @db.VarChar(255)
+  billingState     String?         @db.VarChar(255)
+  billingSuburb    String?         @db.VarChar(255)
+  country          String?         @db.VarChar(255)
+  createdAt        DateTime        @default(now())
+  deliveryAddress  String?         @db.VarChar(255)
+  deliveryCountry  String?         @db.VarChar(255)
+  deliveryPostcode String?         @db.VarChar(255)
+  deliveryState    String?         @db.VarChar(255)
+  deliverySuburb   String?         @db.VarChar(255)
+  email            String?         @db.VarChar(255)
+  fullname         String?         @db.VarChar(255)
+  fundraiser       Fundraiser?     @relation(fields: [fundraiserUuid], references: [id])
+  fundraiserUuid   String?
+  fundraiserTotal  Float?
+  id               String          @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  orderId          Int             @unique @default(autoincrement())
+  orderTotal       Float?
+  ordersproducts   OrdersProduct[]
+  ordersstatus     OrdersStatus?   @relation(fields: [statusUuid], references: [id])
+  statusUuid       String?
+  phone            String?         @db.VarChar(255)
+  postcode         String?         @db.VarChar(255)
+  profit           Float?
+  shippingTotal    Float?
+  state            String?         @db.VarChar(255)
+  suburb           String?         @db.VarChar(255)
+  supplier         UserRole?       @relation(name: "OrderSupplierUserRoleSupplier", fields: [supplierUuid], references: [id])
+  supplierUuid     String?
+  supportNotes     String?         @db.VarChar(1500)
+  tracking         String?         @db.VarChar(48)
+  updatedAt        DateTime        @default(now()) @updatedAt
+  userRoles        UserRole?       @relation(name: "OrdersOnUserRoles", fields: [userUuid], references: [id])
+  userUuid         String?
+
+  @@map("Orders")
+}
+
+model OrdersProduct {
+  caseSize        Int?
+  createdAt       DateTime @default(now())
+  fundraiserPrice Float?
+  id              String   @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  image           String   @db.VarChar(255)
+  maxQty          Int?
+  minQty          Int?
+  name            String   @db.VarChar(255)
+  order           Order    @relation(fields: [orderUuid], references: [id])
+  orderUuid       String
+  price           Float?
+  productUuid     String   @default("") @db.VarChar(255)
+  profit          Float?
+  quantity        Int
+  sku             String?  @db.VarChar(255)
+  supplierUuid    String   @db.VarChar(255)
+  typeField       String?  @map("type") @db.VarChar(255)
+  updatedAt       DateTime @default(now()) @updatedAt
+
+  @@map("OrdersProducts")
+}
+
+model OrdersStatus {
+  id       String  @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  name     String  @db.VarChar(255)
+  orders   Order[]
+  sequence Int     @unique @default(autoincrement())
+  status   String  @db.VarChar(255)
+}
+
+model Category {
+  categoriesproducts CategoriesProduct[]
+  createdAt          DateTime            @default(now())
+  description        String?             @db.VarChar(1500)
+  id                 String              @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  image              CategoriesImage?    @relation(fields: [imageUuid], references: [id])
+  imageUuid          String?
+  quickStarter       Boolean             @default(false)
+  title              String?             @db.VarChar(255)
+  updatedAt          DateTime            @default(now()) @updatedAt
+  userRoles          UserRole?           @relation(fields: [supplierUuid], references: [id])
+  supplierUuid       String?
+
+  @@map("Categories")
+}
+
+model CategoriesProduct {
+  category     Category @relation(fields: [categoryUuid], references: [id])
+  categoryUuid String
+  createdAt    DateTime @default(now())
+  id           String   @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  productUuid  String   @db.VarChar(255)
+  updatedAt    DateTime @default(now()) @updatedAt
+
+  @@map("CategoriesProducts")
+}
+
+model CategoriesImage {
+  categories Category[]
+  createdAt  DateTime   @default(now())
+  id         String     @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  name       String     @db.VarChar(255)
+  path       String     @db.VarChar(255)
+  updatedAt  DateTime   @default(now()) @updatedAt
+
+  @@map("CategoriesImages")
+}
+
+model Fundraiser {
+  createdAt                                   DateTime               @default(now())
+  description                                 String?                @db.VarChar(1500)
+  endDate                                     DateTime
+  fundraisersPromotions                       FundraisersPromotion[]
+  fundraiserscustomers                        FundraisersCustomer[]
+  fundraisersimages                           FundraisersImage?      @relation(fields: [imageUuid], references: [id])
+  imageUuid                                   String?
+  fundraisersorders                           Order[]
+  fundraisersproducts                         FundraisersProduct[]
+  fundraisersstatus                           FundraisersStatus?     @relation(fields: [statusUuid], references: [id])
+  statusUuid                                  String?
+  id                                          String                 @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  image                                       String?                @db.VarChar(255)
+  link                                        String?                @db.VarChar(255)
+  postcode                                    String?                @db.VarChar(12)
+  startDate                                   DateTime
+  subscribed                                  Boolean                @default(false)
+  suburb                                      String?                @db.VarChar(96)
+  target                                      Int?
+  title                                       String?                @db.VarChar(255)
+  topic                                       String?                @db.VarChar(255)
+  topics                                      Topic?                 @relation(fields: [topicUuid], references: [id])
+  topicUuid                                   String?
+  updatedAt                                   DateTime               @default(now()) @updatedAt
+  userRoles                                   UserRole?              @relation(name: "FundraisersOnUserRoles", fields: [userUuid], references: [id])
+  userUuid                                    String?
+  userRolesFundraisersSupplierUuidToUserRoles UserRole?              @relation(name: "fundraisersFundraisersSupplierUuidToUserRoles", fields: [supplierUuid], references: [id])
+  supplierUuid                                String?
+
+  @@map("Fundraisers")
+}
+
+model FundraisersCustomer {
+  createdAt             DateTime           @default(now())
+  fundraiser            Fundraiser?        @relation(fields: [fundraiserUuid], references: [id])
+  fundraiserUuid        String?
+  fundraisersStatus     FundraisersStatus? @relation(fields: [fundraisersStatusUuid], references: [id])
+  fundraisersStatusUuid String?
+  id                    String             @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  updatedAt             DateTime           @default(now()) @updatedAt
+  userRoles             UserRole?          @relation(fields: [usersUuid], references: [id])
+  usersUuid             String?
+
+  @@map("FundraisersCustomers")
+}
+
+model FundraisersProduct {
+  createdAt               DateTime   @default(now())
+  discount                Int        @default(0)
+  fundraiserPrice         Float      @default(0.00)
+  fundraiserPromotionUuid String     @default("") @db.VarChar(255)
+  fundraisers             Fundraiser @relation(fields: [fundraiserUuid], references: [id])
+  fundraiserUuid          String
+  id                      String     @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  product                 Product?   @relation(fields: [productUuid], references: [id])
+  productUuid             Int?
+  productPrice            Float      @default(0.00)
+  promotionUuid           String     @default("") @db.VarChar(255)
+  updatedAt               DateTime   @default(now()) @updatedAt
+
+  @@map("FundraisersProducts")
+}
+
+model FundraisersImage {
+  createdAt   DateTime     @default(now())
+  description String       @default("")
+  fundraisers Fundraiser[]
+  id          String       @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  name        String       @db.VarChar(255)
+  path        String       @db.VarChar(255)
+  theme       String       @default("") @db.VarChar(255)
+  updatedAt   DateTime     @default(now()) @updatedAt
+
+  @@map("FundraisersImages")
+}
+
+model FundraisersStatus {
+  fundraiser          Fundraiser[]
+  fundraisercustomers FundraisersCustomer[]
+  id                  String                @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  name                String                @db.VarChar(255)
+  sequence            Int                   @default(autoincrement())
+  status              String                @unique @db.VarChar(255)
+}
+
+model FundraisersPromotion {
+  createdAt      DateTime                       @default(now())
+  fundraisers    Fundraiser                     @relation(fields: [fundraiserUuid], references: [id])
+  fundraiserUuid String
+  id             String                         @id @default(cuid()) @map("uuid") @db.VarChar(48)
+  promotions     Promotion                      @relation(fields: [promotionUuid], references: [id])
+  promotionUuid  String
+  source         EnumFundraisersPromotionSource @default(FUNDRAISER)
+  status         EnumFundraisersPromotionStatus @default(ACTIVE)
+  updatedAt      DateTime                       @default(now())
+
+  @@map("FundraisersPromotions")
+}
+
+model Product {
+  active                Boolean              @default(false)
+  adjustedSupplierPrice Float?
+  alcohol               Int?
+  approved              Boolean              @default(false)
+  archived              Boolean              @default(false)
+  caseSize              Int?                 @map("case_size")
+  closure               String?              @db.VarChar(48)
+  country               String?              @db.VarChar(255)
+  createdAt             DateTime             @default(now())
+  description           String?              @db.VarChar(1500)
+  fundraiserUuid        String?              @db.VarChar(48)
+  fundraisersProducts   FundraisersProduct[]
+  id                    Int                  @id @default(autoincrement())
+  image                 String?              @db.VarChar(255)
+  maxPrice              Float?
+  maxQty                Int?
+  minPrice              Float?
+  minQty                Int?                 @default(1)
+  name                  String               @db.VarChar(255)
+  price                 Float?
+  producer              String?              @db.VarChar(255)
+  region                String?              @db.VarChar(255)
+  sku                   String?              @unique @db.VarChar(100)
+  state                 String?              @db.VarChar(255)
+  status                String?              @db.VarChar(255)
+  stock                 Int?
+  stockAlert            Int?
+  stockact              Int?
+  stocknsw              Int?
+  stocknt               Int?
+  stockqld              Int?
+  stocksa               Int?
+  stocktas              Int?
+  stockvic              Int?
+  stockwa               Int?
+  supplierPrice         Float?
+  touched               Boolean              @default(false)
+  typeField             String?              @map("type") @db.VarChar(255)
+  updatedAt             DateTime             @default(now()) @updatedAt
+  userRoles             UserRole?            @relation(fields: [supplierUuid], references: [id])
+  supplierUuid          String?
+  uuid                  String               @unique @default(uuid()) @db.VarChar(48)
+  varietal              String?              @db.VarChar(255)
+  vintage               String?              @db.VarChar(48)
+  volume                Int?
+  wholesalePrice        Float?
+  winemaker             String?              @db.VarChar(255)
+
+  @@map("Products")
+}
+
+model Promotion {
+  categoriesproducts    PromotionsProduct[]
+  createdAt             DateTime                     @default(now())
+  description           String                       @db.VarChar(1500)
+  discount              Int
+  endDate               DateTime                     @default(now())
+  excerpt               String                       @default("") @db.VarChar(300)
+  fundraisersPromotions FundraisersPromotion[]
+  id                    String                       @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  image                 PromotionsImage?             @relation(fields: [imageUuid], references: [id])
+  imageUuid             String?
+  max                   Float?
+  min                   Float?
+  name                  String                       @db.VarChar(255)
+  promotionMethod       EnumPromotionPromotionMethod @default(DOLLAR)
+  promotionStatus       EnumPromotionPromotionStatus @default(ACTIVE)
+  promotionType         EnumPromotionPromotionType   @default(FUNDRAISER)
+  startDate             DateTime                     @default(now())
+  updatedAt             DateTime                     @default(now()) @updatedAt
+
+  @@map("Promotions")
+}
+
+model PromotionsProduct {
+  createdAt     DateTime  @default(now())
+  id            String    @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  productUuid   String    @db.VarChar(255)
+  promotion     Promotion @relation(fields: [promotionUuid], references: [id])
+  promotionUuid String
+  updatedAt     DateTime  @default(now()) @updatedAt
+
+  @@map("PromotionsProducts")
+}
+
+model PromotionsImage {
+  createdAt  DateTime    @default(now())
+  id         String      @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  name       String      @db.VarChar(255)
+  path       String      @db.VarChar(255)
+  promotions Promotion[]
+  updatedAt  DateTime    @default(now()) @updatedAt
+
+  @@map("PromotionsImages")
+}
+
+model Activity {
+  activityStatus EnumActivityActivityStatus @default(INCOMPLETE)
+  assigned       Json?
+  createdAt      DateTime                   @default(now())
+  dueDate        DateTime                   @default(now())
+  email          String                     @db.VarChar(255)
+  id             String                     @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  image          String?                    @db.VarChar(255)
+  link           String?                    @db.VarChar(255)
+  linkDrawer     String?                    @db.VarChar(255)
+  linkName       String?                    @db.VarChar(255)
+  linkUuid       String?                    @default("") @db.VarChar(255)
+  text           String
+  updatedAt      DateTime                   @default(now()) @updatedAt
+  userName       String                     @db.VarChar(255)
+  userRoles      UserRole?                  @relation(fields: [userUuid], references: [id])
+  userUuid       String?
+
+  @@map("Activities")
+}
+
+model Inbox {
+  body             String
+  conversationUuid String    @default("") @db.VarChar(255)
+  createdAt        DateTime  @default(now())
+  history          Int       @default(1)
+  id               String    @id @default(uuid()) @map("uuid") @db.VarChar(48)
+  image            String?   @db.VarChar(255)
+  inboxReceiver    UserRole? @relation(name: "InboxInboxReceiverUserRoleInboxReceiver", fields: [receiverUuid], references: [id])
+  receiverUuid     String?
+  inboxSender      UserRole? @relation(name: "InboxInboxSenderUserRoleInboxSender", fields: [senderUuid], references: [id])
+  senderUuid       String?
+  isRead           Boolean   @default(false)
+  isReply          Boolean   @default(false)
+  senderEmail      String    @db.VarChar(255)
+  senderName       String    @db.VarChar(255)
+  subject          String    @db.VarChar(500)
+  updatedAt        DateTime  @default(now()) @updatedAt
+}
+
+model Api {
+  createdAt        DateTime @default(now())
+  data             Json?
+  id               Int      @id @default(autoincrement())
+  subscriptionUuid String   @db.VarChar(48)
+  updatedAt        DateTime @default(now())
+}
+
+model Subscription {
+  access        Boolean   @default(true)
+  alt           String    @default("") @db.VarChar(255)
+  createdAt     DateTime  @default(now())
+  id            String    @id @default(cuid()) @map("uuid") @db.VarChar(48)
+  image         String    @default("") @db.VarChar(255)
+  updatedAt     DateTime  @default(now())
+  userRoles     UserRole? @relation(fields: [userRolesUuid], references: [id])
+  userRolesUuid String?
+
+  @@map("Subscriptions")
+}
+
+model Topic {
+  createdAt   DateTime     @default(now())
+  fundraisers Fundraiser[]
+  id          String       @id @default(cuid()) @map("uuid") @db.VarChar(48)
+  name        String       @default("") @db.VarChar(255)
+  updatedAt   DateTime     @default(now())
+
+  @@map("Topics")
+}
+
+model UsersImage {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid()) @map("uuid") @db.VarChar(48)
+  name      String   @db.VarChar(255)
+  path      String   @db.VarChar(255)
+  updatedAt DateTime @default(now())
+  users     User[]
+
+  @@map("UsersImages")
+}
+
+model Postcode {
+  code          String    @db.VarChar(255)
+  createdAt     DateTime  @default(now())
+  id            String    @id @default(cuid()) @map("uuid") @db.VarChar(48)
+  metro         Boolean   @default(false)
+  updatedAt     DateTime  @default(now())
+  userRoles     UserRole? @relation(fields: [userRolesUuid], references: [id])
+  userRolesUuid String?
+
+  @@map("Postcodes")
+}
+
+enum EnumUserRoleRoles {
+  ADMIN
+  MANAGER
+  SUPPLIER
+  REFERRER
+  CUSTOMER
+  SUPERADMIN
+  SUPPLIERADMIN
+}
+
+enum EnumFundraisersPromotionSource {
+  PARTNER
+  FUNDRAISER
+}
+
+enum EnumFundraisersPromotionStatus {
+  ACTIVE
+  INACTIVE
+  EXPIRES_SOON
+  EXPIRED
+}
+
+enum EnumPromotionPromotionMethod {
+  DOLLAR
+  PERCENTAGE
+}
+
+enum EnumPromotionPromotionStatus {
+  ACTIVE
+  INACTIVE
+  EXPIRES_SOON
+  EXPIRED
+}
+
+enum EnumPromotionPromotionType {
+  FUNDRAISER
+  PARTNER
+}
+
+enum EnumActivityActivityStatus {
+  INCOMPLETE
+  OVERDUE
+  EXPIRES_SOON
+  COMPLETED
+}

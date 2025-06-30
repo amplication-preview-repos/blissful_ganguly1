@@ -1,0 +1,31 @@
+import { FundraisersPromotionCreateNestedManyWithoutFundraisersInput } from "./FundraisersPromotionCreateNestedManyWithoutFundraisersInput";
+import { FundraisersCustomerCreateNestedManyWithoutFundraisersInput } from "./FundraisersCustomerCreateNestedManyWithoutFundraisersInput";
+import { FundraisersImageWhereUniqueInput } from "../fundraisersImage/FundraisersImageWhereUniqueInput";
+import { OrderCreateNestedManyWithoutFundraisersInput } from "./OrderCreateNestedManyWithoutFundraisersInput";
+import { FundraisersProductCreateNestedManyWithoutFundraisersInput } from "./FundraisersProductCreateNestedManyWithoutFundraisersInput";
+import { FundraisersStatusWhereUniqueInput } from "../fundraisersStatus/FundraisersStatusWhereUniqueInput";
+import { TopicWhereUniqueInput } from "../topic/TopicWhereUniqueInput";
+import { UserRoleWhereUniqueInput } from "../userRole/UserRoleWhereUniqueInput";
+
+export type FundraiserCreateInput = {
+  description?: string | null;
+  endDate: Date;
+  fundraisersPromotions?: FundraisersPromotionCreateNestedManyWithoutFundraisersInput;
+  fundraiserscustomers?: FundraisersCustomerCreateNestedManyWithoutFundraisersInput;
+  fundraisersimages?: FundraisersImageWhereUniqueInput | null;
+  fundraisersorders?: OrderCreateNestedManyWithoutFundraisersInput;
+  fundraisersproducts?: FundraisersProductCreateNestedManyWithoutFundraisersInput;
+  fundraisersstatus?: FundraisersStatusWhereUniqueInput | null;
+  image?: string | null;
+  link?: string | null;
+  postcode?: string | null;
+  startDate: Date;
+  subscribed: boolean;
+  suburb?: string | null;
+  target?: number | null;
+  title?: string | null;
+  topic?: string | null;
+  topics?: TopicWhereUniqueInput | null;
+  userRoles?: UserRoleWhereUniqueInput | null;
+  userRolesFundraisersSupplierUuidToUserRoles?: UserRoleWhereUniqueInput | null;
+};

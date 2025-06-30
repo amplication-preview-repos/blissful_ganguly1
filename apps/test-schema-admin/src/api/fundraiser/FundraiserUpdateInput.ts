@@ -1,0 +1,31 @@
+import { FundraisersPromotionUpdateManyWithoutFundraisersInput } from "./FundraisersPromotionUpdateManyWithoutFundraisersInput";
+import { FundraisersCustomerUpdateManyWithoutFundraisersInput } from "./FundraisersCustomerUpdateManyWithoutFundraisersInput";
+import { FundraisersImageWhereUniqueInput } from "../fundraisersImage/FundraisersImageWhereUniqueInput";
+import { OrderUpdateManyWithoutFundraisersInput } from "./OrderUpdateManyWithoutFundraisersInput";
+import { FundraisersProductUpdateManyWithoutFundraisersInput } from "./FundraisersProductUpdateManyWithoutFundraisersInput";
+import { FundraisersStatusWhereUniqueInput } from "../fundraisersStatus/FundraisersStatusWhereUniqueInput";
+import { TopicWhereUniqueInput } from "../topic/TopicWhereUniqueInput";
+import { UserRoleWhereUniqueInput } from "../userRole/UserRoleWhereUniqueInput";
+
+export type FundraiserUpdateInput = {
+  description?: string | null;
+  endDate?: Date;
+  fundraisersPromotions?: FundraisersPromotionUpdateManyWithoutFundraisersInput;
+  fundraiserscustomers?: FundraisersCustomerUpdateManyWithoutFundraisersInput;
+  fundraisersimages?: FundraisersImageWhereUniqueInput | null;
+  fundraisersorders?: OrderUpdateManyWithoutFundraisersInput;
+  fundraisersproducts?: FundraisersProductUpdateManyWithoutFundraisersInput;
+  fundraisersstatus?: FundraisersStatusWhereUniqueInput | null;
+  image?: string | null;
+  link?: string | null;
+  postcode?: string | null;
+  startDate?: Date;
+  subscribed?: boolean;
+  suburb?: string | null;
+  target?: number | null;
+  title?: string | null;
+  topic?: string | null;
+  topics?: TopicWhereUniqueInput | null;
+  userRoles?: UserRoleWhereUniqueInput | null;
+  userRolesFundraisersSupplierUuidToUserRoles?: UserRoleWhereUniqueInput | null;
+};
